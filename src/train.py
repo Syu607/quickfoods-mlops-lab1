@@ -1,6 +1,8 @@
 import os
 import joblib
 import pandas as pd
+import mlflow
+import mlflow.sklearn
 
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
@@ -42,18 +44,38 @@ def save_model(model):
     joblib.dump(model, MODEL_PATH)
 
 def main():
-    print("=== QuickFoods MLOps Lab 1: Baseline Training ===")
+    print("=== QuickFoods MLOps Lab 2: Experiment Tracking with MLflow ===")
 
-    df = load_data(DATA_PATH)
-    result = train_model(df)
+    mlflow.set_experiment("quickfoods-delivery-time")
 
-    print(f"Test samples: {result['test_size']}")
-    print(f"MAE (minutes): {result['mae']:.2f}")
-    print(f"MSE: {result['mse']:.2f}")
+    with mlflow.start_run():
+        df = load_data(DATA_PATH)
+        result = train_model(df)
 
-    save_model(result["model"])
-    print(f"Model saved to: {MODEL_PATH}")
-    print("Done. Reproducible ML artifact created.")
+        # Params
+        mlflow.log_param("model_type", "LinearRegression")
+        mlflow.log_param("test_size", 0.2)
+        mlflow.log_param("random_state", 42)
+
+        # Metrics
+        mlflow.log_metric("mae", result["mae"])
+        mlflow.log_metric("mse", result["mse"])
+
+        # Save local model artifact (file)
+        save_model(result["model"])
+        mlflow.log_artifact(MODEL_PATH)
+
+        # Save MLflow model artifact (structured)
+        mlflow.sklearn.log_model(
+            result["model"],
+            artifact_path="model"
+        )
+
+        print(f"Test samples: {result['test_size']}")
+        print(f"MAE (minutes): {result['mae']:.2f}")
+        print(f"MSE: {result['mse']:.2f}")
+        print(f"Local model saved to: {MODEL_PATH}")
+        print("Logged run to MLflow (params, metrics, model).")
 
 if __name__ == "__main__":
     main()
