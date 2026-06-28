@@ -1,0 +1,14 @@
+artifact_uri: file:C:/Users/msiza/Desktop/quickfoods-mlops-lab1/mlruns/207531626862514596/0ab177c4dabe48af83b5b70935ed251b/artifacts
+end_time: 1782660735591
+entry_point_name: ''
+experiment_id: '207531626862514596'
+lifecycle_stage: active
+run_id: 0ab177c4dabe48af83b5b70935ed251b
+run_name: RandomForest | n_estimators=100 max_depth=5 min_samples_split=2
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1782660726026
+status: 3
+tags: []
+user_id: msiza

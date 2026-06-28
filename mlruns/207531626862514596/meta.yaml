@@ -1,0 +1,9 @@
+artifact_location: file:C:/Users/msiza/Desktop/quickfoods-mlops-lab1/mlruns/207531626862514596
+creation_time: 1782660665199
+effective_trace_archival_retention: null
+experiment_id: '207531626862514596'
+last_update_time: 1782660665199
+lifecycle_stage: active
+name: quickfoods-delivery-time
+trace_location: null
+workspace: default

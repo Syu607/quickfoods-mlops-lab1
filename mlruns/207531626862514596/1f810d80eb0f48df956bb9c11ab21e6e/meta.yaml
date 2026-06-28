@@ -1,0 +1,14 @@
+artifact_uri: file:C:/Users/msiza/Desktop/quickfoods-mlops-lab1/mlruns/207531626862514596/1f810d80eb0f48df956bb9c11ab21e6e/artifacts
+end_time: 1782660880667
+entry_point_name: ''
+experiment_id: '207531626862514596'
+lifecycle_stage: active
+run_id: 1f810d80eb0f48df956bb9c11ab21e6e
+run_name: GradientBoosting | n_estimators=200 learning_rate=0.1 max_depth=3
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1782660871550
+status: 3
+tags: []
+user_id: msiza

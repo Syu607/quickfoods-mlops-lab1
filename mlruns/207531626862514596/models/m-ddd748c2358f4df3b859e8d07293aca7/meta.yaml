@@ -1,0 +1,10 @@
+artifact_location: file:C:/Users/msiza/Desktop/quickfoods-mlops-lab1/mlruns/207531626862514596/models/m-ddd748c2358f4df3b859e8d07293aca7/artifacts
+creation_timestamp: 1782660736380
+experiment_id: '207531626862514596'
+last_updated_timestamp: 1782660744659
+model_id: m-ddd748c2358f4df3b859e8d07293aca7
+model_type: null
+name: sklearn-model
+source_run_id: b0465b035b784ae6b2c60a39dff9b8ae
+status: 2
+status_message: null

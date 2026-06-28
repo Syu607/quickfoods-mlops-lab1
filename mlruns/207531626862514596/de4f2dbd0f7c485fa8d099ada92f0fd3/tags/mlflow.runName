@@ -1,0 +1,1 @@
+GradientBoosting | n_estimators=200 learning_rate=0.2 max_depth=3

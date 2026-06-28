@@ -1,0 +1,14 @@
+artifact_uri: file:C:/Users/msiza/Desktop/quickfoods-mlops-lab1/mlruns/207531626862514596/0dc2827b4cf742d4ad4cf2a3377e1430/artifacts
+end_time: 1782660907522
+entry_point_name: ''
+experiment_id: '207531626862514596'
+lifecycle_stage: active
+run_id: 0dc2827b4cf742d4ad4cf2a3377e1430
+run_name: HyperparamSweep-QuickFoods
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1782660665515
+status: 3
+tags: []
+user_id: msiza
