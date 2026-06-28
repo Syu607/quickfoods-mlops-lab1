@@ -4,3 +4,5 @@ joblib
 fastapi
 uvicorn
 numpy
+requests
+mlflow
