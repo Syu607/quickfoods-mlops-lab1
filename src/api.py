@@ -1,6 +1,6 @@
 import os
 import json
-import joblib
+import mlflow
 import pandas as pd
 from datetime import datetime, timezone
 
@@ -8,22 +8,24 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
 
 
-MODEL_PATH = "models/delivery_time_model.pkl"
-LOG_DIR    = "logs"
-LOG_PATH   = os.path.join(LOG_DIR, "predictions.jsonl")
+REGISTERED_NAME = "quickfoods-delivery-predictor"
+CHAMPION_ALIAS  = "champion"
+LOG_DIR         = "logs"
+LOG_PATH        = os.path.join(LOG_DIR, "predictions.jsonl")
 
 app = FastAPI(
     title="QuickFoods Delivery Time Prediction API",
-    description="API with prediction logging for monitoring",
-    version="2.0.0"
+    description="Serves the champion model from MLflow Registry",
+    version="3.0.0"
 )
 
-# Load model once at startup
-if not os.path.exists(MODEL_PATH):
-    raise RuntimeError(f"Model not found at: {MODEL_PATH}")
-
-model = joblib.load(MODEL_PATH)
 os.makedirs(LOG_DIR, exist_ok=True)
+
+# Load the champion model from the registry
+model_uri = f"models:/{REGISTERED_NAME}@{CHAMPION_ALIAS}"
+print(f"Loading model from: {model_uri}")
+model = mlflow.sklearn.load_model(model_uri)
+print("Model loaded successfully.")
 
 
 class DeliveryRequest(BaseModel):
@@ -38,11 +40,12 @@ class PredictionResponse(BaseModel):
 
 
 def log_prediction(request_data: dict, prediction: float):
-    """Append one JSON line per prediction to the log file."""
     record = {
         "timestamp": datetime.now(timezone.utc).isoformat(),
         "input": request_data,
         "prediction": prediction,
+        "model": REGISTERED_NAME,
+        "alias": CHAMPION_ALIAS,
     }
     with open(LOG_PATH, "a", encoding="utf-8") as f:
         f.write(json.dumps(record) + "\n")
@@ -50,15 +53,11 @@ def log_prediction(request_data: dict, prediction: float):
 
 @app.get("/health")
 def health_check():
-    log_count = 0
-    if os.path.exists(LOG_PATH):
-        with open(LOG_PATH, "r") as f:
-            log_count = sum(1 for _ in f)
     return {
         "status": "healthy",
-        "model_loaded": True,
-        "model_path": MODEL_PATH,
-        "predictions_logged": log_count,
+        "model": REGISTERED_NAME,
+        "alias": CHAMPION_ALIAS,
+        "model_uri": model_uri,
     }
 
 
@@ -74,7 +73,6 @@ def predict(request: DeliveryRequest):
         input_df = pd.DataFrame([input_dict])
         prediction = round(float(model.predict(input_df)[0]), 2)
 
-        # Log every prediction
         log_prediction(input_dict, prediction)
 
         return PredictionResponse(delivery_time_min=prediction)
